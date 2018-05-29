@@ -32,8 +32,8 @@ class BooksApp extends React.Component {
 
   search = (key, query) => {
     if(key === 'Enter'){
-      BooksAPI.search(query).then((booksSearch) => {
-        console.log(booksSearch)
+      BooksAPI.search(query).then((result) => {
+        const booksSearch = result.error ? [] : result
         this.setState({ booksSearch })
       })
     }
@@ -42,11 +42,11 @@ class BooksApp extends React.Component {
   render() {
     const { books, booksSearch } = this.state
 
-    let booksCurrentlyReading = books.filter((book) => book.shelf === 'currentlyReading')
+    const booksCurrentlyReading = books.filter((book) => book.shelf === 'currentlyReading')
 
-    let booksWantToRead = books.filter((book) => book.shelf === 'wantToRead')
+    const booksWantToRead = books.filter((book) => book.shelf === 'wantToRead')
 
-    let booksRead = books.filter((book) => book.shelf === 'read')
+    const booksRead = books.filter((book) => book.shelf === 'read')
 
     console.log(booksSearch)
 
