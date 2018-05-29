@@ -3,16 +3,19 @@ import { Route, Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 import BookShelf from './BookShelf';
+import ListBooks from './ListBooks';
 
 class BooksApp extends React.Component {
   state = {
-    books: []
+    books: [],
+    booksSearch: []
   }
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
     })
+
   }
 
   changeShelf = (book, shelf) => {
@@ -27,14 +30,25 @@ class BooksApp extends React.Component {
     BooksAPI.update(book, shelf)
   }
 
+  search = (key, query) => {
+    if(key === 'Enter'){
+      BooksAPI.search(query).then((booksSearch) => {
+        console.log(booksSearch)
+        this.setState({ booksSearch })
+      })
+    }
+  }
+
   render() {
-    const { books } = this.state
+    const { books, booksSearch } = this.state
 
     let booksCurrentlyReading = books.filter((book) => book.shelf === 'currentlyReading')
 
     let booksWantToRead = books.filter((book) => book.shelf === 'wantToRead')
 
     let booksRead = books.filter((book) => book.shelf === 'read')
+
+    console.log(booksSearch)
 
     return (
       <div className="app">
@@ -79,20 +93,19 @@ class BooksApp extends React.Component {
                 className="close-search"
               >Close</Link>
               <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                <input type="text" placeholder="Search by title or author"/>
-
+                <input
+                  type="text"
+                  placeholder="Search by title or author"
+                  onKeyUp={(event) => this.search(event.key, event.target.value)}
+                />
               </div>
             </div>
             <div className="search-books-results">
               <ol className="books-grid"></ol>
+              <ListBooks
+                books={booksSearch}
+                onChangeShelf={this.changeShelf}
+              />
             </div>
           </div>
         )}
