@@ -1,9 +1,9 @@
 import React from 'react'
-import { Route, Link } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
-import ListBooks from './ListBooks';
 import ListBookShelves from './ListBookShelves';
+import SearchBooks from './SearchBooks';
 
 class BooksApp extends React.Component {
   state = {
@@ -15,7 +15,6 @@ class BooksApp extends React.Component {
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
     })
-
   }
 
   changeShelf = (book, shelf) => {
@@ -61,37 +60,20 @@ class BooksApp extends React.Component {
       <div className="app">
         <Route exact path="/" render={() => (
           <ListBookShelves
-          booksCurrentlyReading={booksCurrentlyReading}
-          booksWantToRead={booksWantToRead}
-          booksRead={booksRead}
-          changeShelf={this.changeShelf}
+            booksCurrentlyReading={booksCurrentlyReading}
+            booksWantToRead={booksWantToRead}
+            booksRead={booksRead}
+            changeShelf={this.changeShelf}
           />
         )}
         />
 
         <Route path="/search" render={({ history }) => (
-          <div className="search-books">
-            <div className="search-books-bar">
-              <Link
-                to="/"
-                className="close-search"
-              >Close</Link>
-              <div className="search-books-input-wrapper">
-                <input
-                  type="text"
-                  placeholder="Search by title or author"
-                  onKeyUp={(event) => this.search(event.key, event.target.value)}
-                />
-              </div>
-            </div>
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
-              <ListBooks
-                books={booksSearch}
-                onChangeShelf={this.changeShelf}
-              />
-            </div>
-          </div>
+          <SearchBooks
+            booksSearch={booksSearch}
+            changeShelf={this.changeShelf}
+            onKeyUp={(event) => this.search(event.key, event.target.value)}
+          />
         )}
         />
 
