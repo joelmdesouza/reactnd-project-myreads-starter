@@ -2,8 +2,8 @@ import React from 'react'
 import { Route, Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
-import BookShelf from './BookShelf';
 import ListBooks from './ListBooks';
+import ListBookShelves from './ListBookShelves';
 
 class BooksApp extends React.Component {
   state = {
@@ -60,35 +60,12 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         <Route exact path="/" render={() => (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-                <BookShelf
-                  title="Currently Reading"
-                  books={booksCurrentlyReading}
-                  onChangeShelf={this.changeShelf}
-                />
-                <BookShelf
-                  title="Want to Read"
-                  books={booksWantToRead}
-                  onChangeShelf={this.changeShelf}
-                />
-                <BookShelf
-                  title="Read"
-                  books={booksRead}
-                  onChangeShelf={this.changeShelf}
-                />
-              </div>
-            </div>
-            <div className="open-search">
-              <Link
-                to="/search"
-              >Add a book</Link>
-            </div>
-          </div>
+          <ListBookShelves
+          booksCurrentlyReading={booksCurrentlyReading}
+          booksWantToRead={booksWantToRead}
+          booksRead={booksRead}
+          changeShelf={this.changeShelf}
+          />
         )}
         />
 
