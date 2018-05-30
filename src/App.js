@@ -33,7 +33,16 @@ class BooksApp extends React.Component {
   search = (key, query) => {
     if(key === 'Enter'){
       BooksAPI.search(query).then((result) => {
-        const booksSearch = result.error ? [] : result
+        const self = this
+        let booksSearch = result.error ? [] : result
+        booksSearch = booksSearch.map(
+          function(book) {
+            const tempBook = self.state.books.filter((b) => b.id === book.id)
+
+            return tempBook.length === 0 ? book : tempBook[0]
+          }
+        )
+
         this.setState({ booksSearch })
       })
     }
@@ -47,8 +56,6 @@ class BooksApp extends React.Component {
     const booksWantToRead = books.filter((book) => book.shelf === 'wantToRead')
 
     const booksRead = books.filter((book) => book.shelf === 'read')
-
-    console.log(booksSearch)
 
     return (
       <div className="app">
