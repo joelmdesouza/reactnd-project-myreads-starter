@@ -29,22 +29,28 @@ class BooksApp extends React.Component {
     BooksAPI.update(book, shelf)
   }
 
-  search = (key, query) => {
-    if(key === 'Enter'){
-      BooksAPI.search(query).then((result) => {
-        const self = this
-        let booksSearch = result.error ? [] : result
-        booksSearch = booksSearch.map(
-          function(book) {
-            const tempBook = self.state.books.filter((b) => b.id === book.id)
-
-            return tempBook.length === 0 ? book : tempBook[0]
-          }
-        )
-
-        this.setState({ booksSearch })
-      })
+  search = (query) => {
+    if(query === ''){
+      let booksSearch = []
+      this.setState({ booksSearch })
+      return
     }
+
+    BooksAPI.search(query).then((result) => {
+      const self = this
+
+      let booksSearch = result.error ? [] : result
+
+      booksSearch = booksSearch.map(
+        function(book) {
+          const tempBook = self.state.books.filter((b) => b.id === book.id)
+
+          return tempBook.length === 0 ? book : tempBook[0]
+        }
+      )
+
+      this.setState({ booksSearch })
+    })
   }
 
   render() {
@@ -64,6 +70,7 @@ class BooksApp extends React.Component {
             booksWantToRead={booksWantToRead}
             booksRead={booksRead}
             changeShelf={this.changeShelf}
+            search={this.search}
           />
         )}
         />
@@ -72,7 +79,7 @@ class BooksApp extends React.Component {
           <SearchBooks
             booksSearch={booksSearch}
             changeShelf={this.changeShelf}
-            onKeyUp={(event) => this.search(event.key, event.target.value)}
+            onChange={(event) => this.search(event.target.value)}
           />
         )}
         />

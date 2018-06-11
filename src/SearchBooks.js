@@ -7,11 +7,11 @@ class SearchBooks extends Component {
     static propTypes = {
         booksSearch: PropTypes.array.isRequired,
         changeShelf: PropTypes.func.isRequired,
-        onKeyUp: PropTypes.func.isRequired
+        onChange: PropTypes.func.isRequired
     }
 
     render() {
-        const { booksSearch, changeShelf, onKeyUp } = this.props
+        const { booksSearch, changeShelf, onChange } = this.props
 
         return (
             <div className="search-books">
@@ -24,7 +24,7 @@ class SearchBooks extends Component {
                         <input
                         type="text"
                         placeholder="Search by title or author"
-                        onKeyUp={onKeyUp}
+                        onChange={onChange}
                         />
                     </div>
                 </div>

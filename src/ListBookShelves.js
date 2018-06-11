@@ -2,13 +2,15 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import BookShelf from './BookShelf'
+import { search } from './BooksAPI';
 
 class ListBookShelves extends Component {
     static propTypes = {
         booksCurrentlyReading: PropTypes.array.isRequired,
         booksWantToRead: PropTypes.array.isRequired,
         booksRead: PropTypes.array.isRequired,
-        changeShelf: PropTypes.func.isRequired
+        changeShelf: PropTypes.func.isRequired,
+        search: PropTypes.func.isRequired
     }
 
     render() {
@@ -41,6 +43,7 @@ class ListBookShelves extends Component {
                 <div className="open-search">
                     <Link
                         to="/search"
+                        onClick={search}
                     >Add a book</Link>
                 </div>
             </div>
