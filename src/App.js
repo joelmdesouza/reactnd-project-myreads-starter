@@ -22,11 +22,11 @@ class BooksApp extends React.Component {
     book.shelf = shelf
     books.push(book)
 
-    this.setState((state) => ({
-      books: books
-    }))
-
-    BooksAPI.update(book, shelf)
+    BooksAPI.update(book, shelf).then(() => {
+      this.setState((state) => ({
+        books: books
+      }))
+    })
   }
 
   search = (query) => {
